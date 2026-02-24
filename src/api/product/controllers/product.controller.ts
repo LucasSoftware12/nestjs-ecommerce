@@ -11,6 +11,11 @@ import { User } from 'src/database/entities/user.entity';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Get()
+  async getAllProducts() {
+    return this.productService.getAllProducts();
+  }
+
   @Get(':id')
   async getProduct(@Param() product: FindOneParams) {
     return this.productService.getProduct(product.id);

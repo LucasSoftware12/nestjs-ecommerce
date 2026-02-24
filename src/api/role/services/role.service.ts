@@ -15,7 +15,7 @@ export class RoleService {
 
   async assignRoleToUser(data: AssignRoleDto) {
     const role = await this.findById(data.roleId);
-    const user = await this.userService.findById(data.userId, { roles: true });
+    const user = await this.userService.findByEmail(data.email, { roles: true });
     if (!user.roles.some((userRole) => userRole.id === data.roleId)) {
       user.roles.push(role);
     }

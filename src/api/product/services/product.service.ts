@@ -21,6 +21,12 @@ export class ProductService {
     private readonly eventbridgeService: EventbridgeService,
   ) {}
 
+  async getAllProducts() {
+    return this.entityManager.find(Product, {
+      relations: ['category']
+    });
+  }
+
   async getProduct(productId: number) {
     const product = await this.entityManager.findOne(Product, {
       where: {

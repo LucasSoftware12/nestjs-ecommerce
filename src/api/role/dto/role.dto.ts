@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsEmail } from 'class-validator';
 
 export class AssignRoleDto {
-  @IsNumber()
+  @IsEmail()
   @IsNotEmpty()
-  public userId: number;
+  public email: string;
 
   @IsNumber()
   @IsNotEmpty()

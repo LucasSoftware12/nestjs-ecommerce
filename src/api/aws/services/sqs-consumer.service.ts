@@ -6,6 +6,7 @@ import {
 } from '@aws-sdk/client-sqs';
 import { ConfigService } from '@nestjs/config';
 import { SesService } from './ses.service';
+import { EventsGateway } from './events.gateway';
 
 @Injectable()
 export class SqsConsumerService implements OnModuleInit, OnModuleDestroy {
@@ -17,6 +18,7 @@ export class SqsConsumerService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private configService: ConfigService,
     private sesService: SesService,
+    private eventsGateway: EventsGateway,
   ) {
     this.sqsClient = new SQSClient({
       region: this.configService.get<string>('AWS_REGION'),
@@ -86,6 +88,8 @@ export class SqsConsumerService implements OnModuleInit, OnModuleDestroy {
         const productId = detail.productId;
         const merchantId = detail.merchantId;
         this.logger.log(`Event product.activated received. Product ID: ${productId}, Merchant ID: ${merchantId}`);
+        
+        this.eventsGateway.notifyNewProduct({ productId, merchantId, ...detail });
       } else {
         this.logger.warn(`Unknown event type received: ${eventType}`);
       }
